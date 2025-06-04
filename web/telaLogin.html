@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clínica Veterinária - Login</title>
+    <link rel="stylesheet" href="telaLogin.css">
+</head>
+<body>
+    <div class="login-container">
+        <header>
+            <h1>Login da Clínica Veterinária</h1>
+        </header>
+
+        <main>
+            <h2 id="form-title">Entre com suas credenciais</h2>
+
+            <!-- Formulário de Login -->
+            <form method="POST" action="telaLogin.jsp">
+                <div class="input-group">
+                    <label for="username">E-mail do Usuário:</label>
+                    <input type="text" id="username" name="username" placeholder="Digite seu E-mail" required>
+                </div>
+
+                <div class="input-group">
+                    <label for="password">Senha:</label>
+                    <input type="password" id="password" name="password" placeholder="Digite a senha" required>
+                </div>
+
+                <button type="submit" class="btn-login" id="btnLogin">Entrar</button> 
+                
+                 <button type="button" class="btn-login" id="btnCancelar" onclick="window.location.href='index.html'">Cancelar</button>
+                
+                <p>Não possui uma conta? Clique</p> <a href="telaCadastro.html">aqui.</a>
+                
+                
+                <script src="validacaoCadastro.js"></script>                
+            </form>
+
+        </main>
+    </div>
+</body>
+</html>

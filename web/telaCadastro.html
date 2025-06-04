@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Clínica Veterinária - Cadastro</title>
+  <link rel="stylesheet" href="telaCadastro.css" />
+  <style>
+    /* Só um toque rápido pra deixar erro vermelho */
+    .error-message {
+      color: red;
+      font-size: 0.9em;
+      margin-top: 4px;
+    }
+  </style>
+</head>
+<body>
+  <div class="register-container">
+    <header>
+      <h1>Cadastro da Clínica Veterinária</h1>
+    </header>
+
+    <main>
+      <h2 id="form-title">Preencha os dados para criar sua conta</h2>
+
+      <nav>
+        <form id="cadastro-form" method="POST" action="telaCadastro.jsp">
+          <div class="input-group">
+            <label for="nomeUsuario">Nome de Usuário:</label>
+            <input
+              type="text"
+              id="nomeUsuario"
+              name="username"
+              placeholder="Digite o nome de usuário"
+              required
+            />
+          </div>
+
+          <div class="input-group">
+            <label for="email">E-mail:</label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              placeholder="Digite o seu e-mail"
+              required
+            />
+          </div>
+
+          <div class="input-group">
+            <label for="cpf">CPF:</label>
+            <input
+              type="text"
+              id="cpf"
+              name="cpf"
+              maxlength="14"
+              placeholder="Digite seu CPF (ex: 123.456.789-09)"
+              required
+            />
+            <ul id="erro-cpf" class="error-message"></ul>
+          </div>
+
+          <div class="input-group">
+            <label for="senhaUsuario">Senha:</label>
+            <input
+              type="password"
+              id="senhaUsuario"
+              name="password"
+              placeholder="Digite a senha"
+              required
+            />
+            <ul id="erro-senha" class="error-list"></ul>
+          </div>
+
+          <div class="input-group">
+            <label for="confirm-password">Confirmar Senha:</label>
+            <input
+              type="password"
+              id="confirm-password"
+              name="confirm-password"
+              placeholder="Confirme a senha"
+              required
+            />
+            <span id="erro-confirmar-senha" class="error-message"></span>
+          </div>
+
+          <button type="submit" class="btn-register">Cadastrar</button>
+          <button
+            type="button"
+            class="btn-login"
+            id="btnCancelar"
+            onclick="window.location.href='telaLogin.html'"
+          >
+            Cancelar
+          </button>
+
+          <script>
+            // Função para validar CPF
+            function validarCPF(cpf) {
+              cpf = cpf.replace(/[^\d]+/g, ""); // Remove tudo que não é dígito
+
+              if (cpf.length !== 11) return false;
+
+              // Elimina CPFs conhecidos inválidos
+              if (
+                cpf === "00000000000" ||
+                cpf === "11111111111" ||
+                cpf === "22222222222" ||
+                cpf === "33333333333" ||
+                cpf === "44444444444" ||
+                cpf === "55555555555" ||
+                cpf === "66666666666" ||
+                cpf === "77777777777" ||
+                cpf === "88888888888" ||
+                cpf === "99999999999"
+              )
+                return false;
+
+              // Valida primeiro dígito verificador
+              let soma = 0;
+              for (let i = 0; i < 9; i++) {
+                soma += parseInt(cpf.charAt(i)) * (10 - i);
+              }
+              let resto = (soma * 10) % 11;
+              if (resto === 10 || resto === 11) resto = 0;
+              if (resto !== parseInt(cpf.charAt(9))) return false;
+
+              // Valida segundo dígito verificador
+              soma = 0;
+              for (let i = 0; i < 10; i++) {
+                soma += parseInt(cpf.charAt(i)) * (11 - i);
+              }
+              resto = (soma * 10) % 11;
+              if (resto === 10 || resto === 11) resto = 0;
+              if (resto !== parseInt(cpf.charAt(10))) return false;
+
+              return true;
+            }
+
+            // Validação do formulário ao enviar
+            document.addEventListener("DOMContentLoaded", function () {
+              document
+                .getElementById("cadastro-form")
+                .addEventListener("submit", function (event) {
+                  const cpfInput = document.getElementById("cpf");
+                  const erroCPF = document.getElementById("erro-cpf");
+                  erroCPF.textContent = "";
+
+                  const cpf = cpfInput.value.trim();
+
+                  let formValido = true;
+
+                  if (!validarCPF(cpf)) {
+                    erroCPF.textContent = "CPF inválido.";
+                    formValido = false;
+                  }
+
+                  // Aqui você pode manter outras validações de senha, etc.
+
+                  if (!formValido) {
+                    event.preventDefault();
+                  }
+                });
+            });
+
+            // Opcional: máscara simples para CPF
+            document
+              .getElementById("cpf")
+              .addEventListener("input", function (e) {
+                let v = e.target.value.replace(/\D/g, "");
+                v = v.slice(0, 11);
+                v = v
+                  .replace(/^(\d{3})(\d)/, "$1.$2")
+                  .replace(/^(\d{3})\.(\d{3})(\d)/, "$1.$2.$3")
+                  .replace(/^(\d{3})\.(\d{3})\.(\d{3})(\d)/, "$1.$2.$3-$4");
+                e.target.value = v;
+              });
+          </script>
+        </form>
+      </nav>
+    </main>
+  </div>
+</body>
+</html>
